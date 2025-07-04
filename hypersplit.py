@@ -313,6 +313,45 @@ def main(args):
     print(f"Solve Time (s) : {solve_time:.4f}")
     print(f"Total Time (s) : {total_time:.4f}")
 
+    # recover row and column index mappings (partial)
+    row_map = {}
+    col_map = {}
+
+    for pair in best_node_maps:
+        v = x_hpg[pair.v]
+        w = y_hpg[pair.w]
+        row_map[v.row] = w.row
+        col_map[v.col] = w.col
+
+    # sort matched indices by index order
+    matched_x_rows = sorted(row_map.keys())
+    matched_x_cols = sorted(col_map.keys())
+    matched_y_rows = [row_map[r] for r in matched_x_rows]
+    matched_y_cols = [col_map[c] for c in matched_x_cols]
+
+    # fill unmatched rows/columns to complete permutations
+    all_x_rows = list(range(x_row))
+    all_x_cols = list(range(x_col))
+    all_y_rows = list(range(y_row))
+    all_y_cols = list(range(y_col))
+
+    unmatched_x_rows = [r for r in all_x_rows if r not in matched_x_rows]
+    unmatched_x_cols = [c for c in all_x_cols if c not in matched_x_cols]
+    unmatched_y_rows = [r for r in all_y_rows if r not in matched_y_rows]
+    unmatched_y_cols = [c for c in all_y_cols if c not in matched_y_cols]
+
+    # final permutations
+    x_row_perm = matched_x_rows + unmatched_x_rows
+    x_col_perm = matched_x_cols + unmatched_x_cols
+    y_row_perm = matched_y_rows + unmatched_y_rows
+    y_col_perm = matched_y_cols + unmatched_y_cols
+
+    print("\n===== Permutations =====")
+    print("X rows:", x_row_perm)
+    print("X cols:", x_col_perm)
+    print("Y rows:", y_row_perm)
+    print("Y cols:", y_col_perm)
+
 
 if __name__ == "__main__":
     args = parse_args()
