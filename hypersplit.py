@@ -270,8 +270,8 @@ def main(args):
     y_tab_df = pd.read_csv(y_filepath, skiprows=args.yh, header=None)
     
     # convert df to lists of lists (columns), replace NaNs with empty strings
-    x_tab = x_tab_df.where(pd.notna(x_tab_df), "").values.T.tolist()
-    y_tab = y_tab_df.where(pd.notna(y_tab_df), "").values.T.tolist()
+    x_tab = x_tab_df.where(pd.notna(x_tab_df), "").astype(str).values.T.tolist()
+    y_tab = y_tab_df.where(pd.notna(y_tab_df), "").astype(str).values.T.tolist()
 
     # setup: construct hypergraphs
     setup_start_time = time.time()
